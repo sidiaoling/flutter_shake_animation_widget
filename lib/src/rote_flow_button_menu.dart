@@ -14,22 +14,22 @@ import 'package:flutter/material.dart';
 ///   流式布局 Flow 圆形菜单
 class RoteFlowButtonMenu extends StatefulWidget {
   ///菜单图标
-  final List<Icon> iconList;
+  final List<Widget> iconList;
 
   ///菜单图标背景
-  final List<Color> iconBackgroundColorList;
+  final List<Color> ?iconBackgroundColorList;
 
   ///所有菜单项默认使用的底色
   final Color defaultBackgroundColor;
 
   ///点击事件回调
-  final Function(int index) clickCallBack;
+  final Function(int index) ?clickCallBack;
 
   ///是否输出Log
   final bool isLog;
 
   RoteFlowButtonMenu(
-      {@required this.iconList,
+      {required this.iconList,
       this.clickCallBack,
       this.isLog = false,
       this.defaultBackgroundColor = Colors.deepOrange,
@@ -50,10 +50,10 @@ class _MenuState extends State<RoteFlowButtonMenu>
   bool _closed = true;
 
   ///动画控制器
-  AnimationController _controller;
+  late AnimationController _controller;
 
   ///用于控制变化速率
-  Animation<double> animation;
+  late Animation<double> animation;
 
   ///用于保存显示出来的菜单效果Widget
   List<Widget> menuItemList = [];
@@ -110,45 +110,23 @@ class _MenuState extends State<RoteFlowButtonMenu>
   }
 
   //lib/code10/main_data1019.dart
-  /// 流式布局 Flow 圆形菜单
-  ///构建菜单所使用到的图标
-  List<Icon> iconList = [
-    Icon(
-      Icons.android,
-      color: Colors.white,
-      size: 18,
-    ),
-    Icon(
-      Icons.image,
-      color: Colors.white,
-      size: 18,
-    ),
-    Icon(
-      Icons.find_in_page,
-      color: Colors.white,
-      size: 18,
-    ),
-    Icon(Icons.add, color: Colors.white, size: 28),
-  ];
-
-  //lib/code10/main_data1019.dart
   /// Flow 流式布局 构建菜单数据Widget
   List<Widget> buildMenuData() {
     List<Widget> childWidthList = [];
 
     ///为每个Icon添加一个点击事件与圆形背景
-    for (int i = 0; i < iconList.length; i++) {
+    for (int i = 0; i < widget.iconList.length; i++) {
       Color itemColor = widget.defaultBackgroundColor;
       if (widget.iconBackgroundColorList != null &&
-          widget.iconBackgroundColorList.length > i) {
-        itemColor = widget.iconBackgroundColorList[i];
+          widget.iconBackgroundColorList!.length > i) {
+        itemColor = widget.iconBackgroundColorList![i];
       }
 
       ///每个菜单添加InkWell点击事件
       Widget itemContainer = InkWell(
         onTap: () {
           if (widget.clickCallBack != null) {
-            widget.clickCallBack(i);
+            widget.clickCallBack!(i);
           }
 
           ///打开或者关闭菜单
@@ -164,7 +142,7 @@ class _MenuState extends State<RoteFlowButtonMenu>
           alignment: Alignment.center,
           height: 44,
           width: 44,
-          child: iconList[i],
+          child: widget.iconList[i],
         ),
       );
       childWidthList.add(
@@ -193,7 +171,7 @@ class _MenuState extends State<RoteFlowButtonMenu>
           delegate: RoteFlowButtonMenuDelegate(radiusRate: _rad),
 
           ///使用到的子Widget
-          children: menuItemList,
+          children: buildMenuData(),
         )
       ],
     );
@@ -249,7 +227,8 @@ class RoteFlowButtonMenuDelegate extends FlowDelegate {
     //计算每一个子widget的位置
     for (var i = 0; i < context.childCount - 1; i++) {
       ///获取第i个子Widget的大小
-      Size itemChildSize = context.getChildSize(i);
+      Size? itemChildSize = context.getChildSize(i);
+      if (itemChildSize == null) return;
 
       ///子child开始绘制的y中心点
       double normalHeight = flowHeight - itemChildSize.height * 2;
@@ -265,7 +244,8 @@ class RoteFlowButtonMenuDelegate extends FlowDelegate {
 
     ///最后一个做为菜单选项
     int lastIndex = context.childCount - 1;
-    Size lastChildSize = context.getChildSize(lastIndex);
+    Size? lastChildSize = context.getChildSize(lastIndex);
+    if (lastChildSize == null) return;
     double lastx = (flowWidth - lastChildSize.height * 1.5);
     double lasty = flowHeight - lastChildSize.height * 2;
 

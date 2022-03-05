@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 /// 创建人： Created by zhaolong
 /// 创建时间：Created by  on 2020/11/10.
 ///
@@ -9,7 +8,7 @@ import 'package:flutter/material.dart';
 /// 可关注网易云课堂：https://study.163.com/instructor/1021406098.htm
 /// 可关注博客：https://blog.csdn.net/zl18603543572
 /// 头条|西瓜视频： https://www.toutiao.com/c/user/token/MS4wLjABAAAAYMrKikomuQJ4d-cPaeBqtAK2cQY697Pv9xIyyDhtwIM/
-/// 
+///
 ///防开源中国自定义底部菜单
 ///   流式布局 Flow 圆形菜单
 class BottomRoundFlowMenu extends StatefulWidget {
@@ -17,23 +16,23 @@ class BottomRoundFlowMenu extends StatefulWidget {
   final List<Icon> iconList;
 
   ///菜单图标背景
-  final List<Color> iconBackgroundColorList;
+  final List<Color>? iconBackgroundColorList;
 
   ///所有菜单项默认使用的底色
   final Color defaultBackgroundColor;
 
   ///点击事件回调
-  final  Function(int index) clickCallBack;
+  final Function(int index)? clickCallBack;
 
   ///是否输出Log
   final bool isLog;
 
   BottomRoundFlowMenu(
-      {@required this.iconList,
-        this.clickCallBack,
-        this.isLog = false,
-        this.defaultBackgroundColor = Colors.grey,
-        this.iconBackgroundColorList});
+      {required this.iconList,
+      this.clickCallBack,
+      this.isLog = false,
+      this.defaultBackgroundColor = Colors.grey,
+      this.iconBackgroundColorList});
 
   @override
   _MenuState createState() => _MenuState();
@@ -49,10 +48,10 @@ class _MenuState extends State<BottomRoundFlowMenu>
   bool _closed = true;
 
   ///动画控制器
-  AnimationController _controller;
+  late AnimationController _controller;
 
   ///用于控制变化速率
-  Animation<double> animation;
+  late Animation<double> animation;
 
   ///用于保存显示出来的菜单效果Widget
   List<Widget> menuItemList = [];
@@ -64,39 +63,39 @@ class _MenuState extends State<BottomRoundFlowMenu>
     ///创建动画控制器
     ///执行时间为200毫秒
     _controller =
-    AnimationController(duration: Duration(milliseconds: 400), vsync: this)
+        AnimationController(duration: Duration(milliseconds: 400), vsync: this)
 
-    ///设置监听，每当动画执行时就会实时回调此方法
-      ..addListener(() {
-        setState(() {
-          ///从0到1
-          _rad = animation.value;
-          if (widget.isLog) {
-            print("$_rad ");
-          }
-        });
-      })
+          ///设置监听，每当动画执行时就会实时回调此方法
+          ..addListener(() {
+            setState(() {
+              ///从0到1
+              _rad = animation.value;
+              if (widget.isLog) {
+                print("$_rad ");
+              }
+            });
+          })
 
-    ///设置状态监听
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          if (widget.isLog) {
-            print("正向执行完毕 ");
-          }
-          _closed = !_closed;
-        } else if (status == AnimationStatus.dismissed) {
-          if (widget.isLog) {
-            print("反向执行完毕 ");
-          }
-          _closed = !_closed;
-        }
-      });
+          ///设置状态监听
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              if (widget.isLog) {
+                print("正向执行完毕 ");
+              }
+              _closed = !_closed;
+            } else if (status == AnimationStatus.dismissed) {
+              if (widget.isLog) {
+                print("反向执行完毕 ");
+              }
+              _closed = !_closed;
+            }
+          });
 
     ///变化值从 0.0-1.0
     ///Curves.easeInOutExpo 中间快两头慢
     animation = Tween(begin: 0.0, end: 1.0).animate(
 
-      ///先快后慢
+        ///先快后慢
         CurveTween(curve: Curves.easeOutQuint).animate(_controller));
 
     ///构建菜单具体显示的Widget
@@ -124,15 +123,15 @@ class _MenuState extends State<BottomRoundFlowMenu>
       Color itemColor = widget.defaultBackgroundColor;
       //图标背景
       if (widget.iconBackgroundColorList != null &&
-          i <widget.iconBackgroundColorList.length) {
-        itemColor = widget.iconBackgroundColorList[i];
+          i < widget.iconBackgroundColorList!.length) {
+        itemColor = widget.iconBackgroundColorList![i];
       }
 
       ///每个菜单添加InkWell点击事件
       Widget itemContainer = InkWell(
         onTap: () {
           if (widget.clickCallBack != null) {
-            widget.clickCallBack(i);
+            widget.clickCallBack!(i);
           }
 
           ///打开或者关闭菜单
@@ -233,7 +232,10 @@ class TestFlowDelegate extends FlowDelegate {
     //计算每一个子widget的位置
     for (var i = 0; i < context.childCount - 1; i++) {
       ///获取第i个子Widget的大小
-      Size itemChildSize = context.getChildSize(i);
+      Size? itemChildSize = context.getChildSize(i);
+      if (itemChildSize == null) {
+        return;
+      }
 
       ///子child开始绘制的y中心点
       double normalHeight = flowHeight - itemChildSize.height * 2;
@@ -260,7 +262,10 @@ class TestFlowDelegate extends FlowDelegate {
 
     ///最后一个做为菜单选项
     int lastIndex = context.childCount - 1;
-    Size lastChildSize = context.getChildSize(lastIndex);
+    Size? lastChildSize = context.getChildSize(lastIndex);
+    if (lastChildSize == null) {
+      return;
+    }
     double lastx = (flowWidth - lastChildSize.width / 2) / 2;
     double lasty = flowHeight - lastChildSize.height * 2;
 
@@ -270,13 +275,13 @@ class TestFlowDelegate extends FlowDelegate {
         ///先平移到底部
         transform: Matrix4.translationValues(lastx, lasty, 0.0)
 
-        ///然后将旋转中心平移到子Widget的中心
+          ///然后将旋转中心平移到子Widget的中心
           ..translate(lastChildSize.width / 2, lastChildSize.height / 2)
 
-        ///合并旋转操作
+          ///合并旋转操作
           ..multiply(Matrix4.rotationZ(radiusRate * 0.8)
 
-          ///再将旋转中心平移回去
+            ///再将旋转中心平移回去
             ..translate(-lastChildSize.width / 2, -lastChildSize.height / 2)));
 //    context.paintChild(lastIndex,
 //        transform: Matrix4Transform()
