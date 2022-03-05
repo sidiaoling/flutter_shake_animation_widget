@@ -68,6 +68,7 @@ class _TestPageState extends State<TestPage> {
     return RoteFloatingButton(
       //子菜单按钮选项
       iconList: iconList,
+      iconSize: 66,
       ///子菜单按钮的点击事件回调
       clickCallback: (int index) {
         print("点击了按钮$index");

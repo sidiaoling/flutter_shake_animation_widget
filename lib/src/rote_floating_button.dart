@@ -13,18 +13,21 @@ import 'package:flutter/painting.dart';
 class RoteFloatingButton extends StatefulWidget {
   //菜单按钮选项
   final List<Icon> iconList;
+  final double iconSize;
 
   //按钮的点击事件
-  final Function(int index) ?clickCallback;
+  final Function(int index)? clickCallback;
 
-  RoteFloatingButton({required this.iconList, this.clickCallback});
+  RoteFloatingButton(
+      {required this.iconList, this.clickCallback, this.iconSize = 48.0});
 
   @override
   _RoteButtonPageState createState() => _RoteButtonPageState();
 }
 
 ////旋转变换按钮 向上弹出的效果 State实现
-class _RoteButtonPageState extends State<RoteFloatingButton> with SingleTickerProviderStateMixin {
+class _RoteButtonPageState extends State<RoteFloatingButton>
+    with SingleTickerProviderStateMixin {
   //记录是否打开
   bool isOpened = false;
 
@@ -32,7 +35,7 @@ class _RoteButtonPageState extends State<RoteFloatingButton> with SingleTickerPr
   late AnimationController _animationController;
 
   //颜色变化取值
-  late  Animation<Color?> _animateColor;
+  late Animation<Color?> _animateColor;
 
   //图标变化取值
   late Animation<double> _animateIcon;
@@ -97,16 +100,20 @@ class _RoteButtonPageState extends State<RoteFloatingButton> with SingleTickerPr
             _translateButton.value * (widget.iconList.length - i),
             0.0,
           ),
-          child: FloatingActionButton(
-            heroTag: "$i",
-            onPressed: () {
-              //点击菜单子选项要求菜单弹缩回去
-              floatClick();
-              if (widget.clickCallback != null) {
-                widget.clickCallback!(i);
-              }
-            },
-            child: widget.iconList[i],
+          child: SizedBox(
+            width: widget.iconSize,
+            height: widget.iconSize,
+            child: FloatingActionButton(
+              heroTag: "$i",
+              onPressed: () {
+                //点击菜单子选项要求菜单弹缩回去
+                floatClick();
+                if (widget.clickCallback != null) {
+                  widget.clickCallback!(i);
+                }
+              },
+              child: widget.iconList[i],
+            ),
           ),
         ),
       );
@@ -124,6 +131,8 @@ class _RoteButtonPageState extends State<RoteFloatingButton> with SingleTickerPr
   //构建固定旋转菜单按钮
   Widget floatButton() {
     return new Container(
+      width: widget.iconSize,
+      height: widget.iconSize,
       child: FloatingActionButton(
         //通过_animateColor实现背景颜色的过渡
         backgroundColor: _animateColor.value,
