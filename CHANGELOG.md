@@ -1,3 +1,5 @@
+## [3.0.2] 文档更新
+
 ## [3.0.1] RoteFloatingButton 支持设置按钮大小
 
 ## [3.0.0] safe null flutter 2.5 支持

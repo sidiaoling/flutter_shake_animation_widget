@@ -2,7 +2,9 @@
 Flutter抖动动画组件，FLutter颤动动画
 
 
-#### 抖动效果
+#### 1 抖动效果
+
+![](images/shake_button.gif)
 
 ```
   ///构建抖动效果
@@ -40,8 +42,35 @@ Flutter抖动动画组件，FLutter颤动动画
     );
   }
 ```
+#### 2 抖动的文本
 
-####  防开源中国自定义底部菜单
+![](images/shake_text.gif)
+
+```
+  buildTextAnimationWidget() {
+    return ShakeTextAnimationWidget(
+      //需要设置抖动效果的文本
+      animationString: "这里是文字的抖动",
+      space: 1.0,
+      //字符间距
+      runSpace: 10,
+      //行间距
+      //文字的样式
+      textStyle: const TextStyle(
+        ///文字的大小
+        fontSize: 25,
+      ),
+      //抖动次数
+      shakeCount: 0,
+    );
+  }
+```
+
+
+#### 3 防开源中国自定义底部菜单
+
+
+![](images/bottom_ani_button.gif)
 
 ```
       BottomRoundFlowMenu(
@@ -56,7 +85,9 @@ Flutter抖动动画组件，FLutter颤动动画
         )
 ```
 
-#### 动画按钮
+#### 4 动画按钮
+
+![](images/animated_button.gif)
 
 ```
   //动画按钮使用到的控制器
@@ -97,7 +128,9 @@ Flutter抖动动画组件，FLutter颤动动画
 ```
 
 
-#### 垂直向上弹出菜单
+#### 5 垂直向上弹出菜单
+
+![](images/float_right_button.gif)
 
 ```
     RoteFlowButtonMenu(

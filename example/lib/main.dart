@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shake_animation_widget/shake_animation_widget.dart';
@@ -14,16 +11,21 @@ import 'package:shake_animation_widget/shake_animation_widget.dart';
 ///
 ///
 main() {
-  runApp(TestPage());
+  runApp(MaterialApp(
+    home: Exam222HomePage(),
+  ));
 }
 
-class TestPage extends StatefulWidget {
+///代码路径 lib/code2/code219_Button.dart
+class Exam222HomePage extends StatefulWidget {
+  const Exam222HomePage({Key? key}) : super(key: key);
+
   @override
-  _TestPageState createState() => _TestPageState();
+  State<Exam222HomePage> createState() => _Exam220HomePageState();
 }
 
 //lib/code/main_data.dart
-class _TestPageState extends State<TestPage> {
+class _Exam220HomePageState extends State<Exam222HomePage> {
   //定义菜单按钮选项
   List<Icon> iconList = [
     Icon(Icons.add),
@@ -48,15 +50,33 @@ class _TestPageState extends State<TestPage> {
               children: [
                 Column(
                   children: [
+                    SizedBox(height: 40),
+
                     ///通用组件的抖动
                     buildShakeAnimationWidget(),
+                    SizedBox(height: 100),
 
                     ///文字的抖动
                     buildTextAnimationWidget(),
+                    SizedBox(height: 140),
+                    buildAnimatedStatusButton(),
+                    SizedBox(height: 140),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return Example309();
+                          }));
+                        },
+                        child: Text("开源中图底部菜单"))
                   ],
                 ),
                 //向上弹出的按钮组件
-                buildRoteFloatingButton(),
+                Positioned(
+                  child: buildRoteFloatingButton(),
+                  right: 10,
+                  bottom: 20,
+                ),
               ],
             )),
       ),
@@ -68,7 +88,8 @@ class _TestPageState extends State<TestPage> {
     return RoteFloatingButton(
       //子菜单按钮选项
       iconList: iconList,
-      iconSize: 66,
+      iconSize: 56,
+
       ///子菜单按钮的点击事件回调
       clickCallback: (int index) {
         print("点击了按钮$index");
@@ -76,16 +97,17 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
+  ///代码清单2-25-2 抖动的文本
   buildTextAnimationWidget() {
     return ShakeTextAnimationWidget(
       //需要设置抖动效果的文本
       animationString: "这里是文字的抖动",
-      //字符间距
       space: 1.0,
-      //行间距
+      //字符间距
       runSpace: 10,
+      //行间距
       //文字的样式
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         ///文字的大小
         fontSize: 25,
       ),
@@ -94,10 +116,10 @@ class _TestPageState extends State<TestPage> {
     );
   }
 
-  ///lib/code23/20main_data2332.dart
+  ///代码清单2-25-1 抖动组件
   ///抖动动画控制器
-  ShakeAnimationController _shakeAnimationController =
-  new ShakeAnimationController();
+  final ShakeAnimationController _shakeAnimationController =
+      ShakeAnimationController();
 
   ///构建抖动效果
   ShakeAnimationWidget buildShakeAnimationWidget() {
@@ -114,7 +136,7 @@ class _TestPageState extends State<TestPage> {
       shakeRange: 0.2,
       //执行抖动动画的子Widget
       child: RaisedButton(
-        child: Text(
+        child: const Text(
           '测试',
           style: TextStyle(color: Colors.white),
         ),
@@ -136,53 +158,50 @@ class _TestPageState extends State<TestPage> {
 
   Widget buildProgressButton() {
     return //切换样式的动画按钮
-      AnimatedButton(
-        width: 120.0,
-        height: 40,
-        buttonText: '动画样式按钮',
-        clickCallback: (){
-          print("点击事件回调");
-        },
-      );
+        AnimatedButton(
+      width: 120.0,
+      height: 40,
+      buttonText: '动画样式按钮',
+      clickCallback: () {
+        print("点击事件回调");
+      },
+    );
   }
 
-
+  ///代码清单2-25-3 抖动的文本
   //动画按钮使用到的控制器
   AnimatedStatusController animatedStatusController =
-  new AnimatedStatusController();
+      AnimatedStatusController();
 
   //切换样式的动画按钮
   Widget buildAnimatedStatusButton() {
     return AnimatedStatusButton(
-      //控制器
       animatedStatusController: animatedStatusController,
-      //显示按钮的宽度
+      //控制器
       width: 220.0,
-      //显示按钮的高度
+      //显示按钮的宽度
       height: 40,
-      //动画交互时间
+      //显示按钮的高度
       milliseconds: 1000,
+      //动画交互时间
       buttonText: '提交',
-      //背景颜色
       backgroundNormalColor: Colors.white,
-      //边框颜色
+      //背景颜色
       borderNormalColor: Colors.deepOrange,
-      //文字颜色
+      //边框颜色
       textNormalCcolor: Colors.deepOrange,
+      //文字颜色
       //点击回调
       clickCallback: () async {
         print("点击事件回调");
         //模拟耗时操作
         await Future.delayed(Duration(milliseconds: 4000));
-
         //返回false 会一直在转圈圈
         //返回true 会回到默认显示样式
         return Future.value(false);
       },
     );
   }
-
-
 }
 
 //防开源中国自定义底部菜单
@@ -193,24 +212,13 @@ class Example309 extends StatefulWidget {
   }
 }
 
+///代码清单2-25-4 底部弹出的圆形导航栏菜单
 class _ExampleState extends State<Example309> {
   ///构建菜单所使用到的图标
   List<Icon> iconList = [
-    Icon(
-      Icons.android,
-      color: Colors.blue,
-      size: 18,
-    ),
-    Icon(
-      Icons.image,
-      color: Colors.red,
-      size: 18,
-    ),
-    Icon(
-      Icons.find_in_page,
-      color: Colors.orange,
-      size: 18,
-    ),
+    Icon(Icons.android, color: Colors.blue, size: 18),
+    Icon(Icons.image, color: Colors.red, size: 18),
+    Icon(Icons.find_in_page, color: Colors.orange, size: 18),
     Icon(Icons.add, color: Colors.lightGreenAccent, size: 28),
   ];
 
@@ -218,9 +226,6 @@ class _ExampleState extends State<Example309> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text("仿开源中国底部弹出菜单"),
-      ),
       body: Container(
         //文字标签流式布局
         child: BottomRoundFlowMenu(
@@ -237,4 +242,3 @@ class _ExampleState extends State<Example309> {
     );
   }
 }
-
