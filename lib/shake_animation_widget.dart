@@ -10,3 +10,4 @@ export 'package:shake_animation_widget/src/animated_button.dart';
 export 'package:shake_animation_widget/src/animated_button_statue.dart';
 export 'package:shake_animation_widget/src/bottom_round_flow_menu.dart';
 export 'package:shake_animation_widget/src/rote_flow_button_menu.dart';
+export 'package:shake_animation_widget/src/draggable_floating_action_button.dart';

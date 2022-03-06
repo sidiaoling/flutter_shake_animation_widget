@@ -68,7 +68,18 @@ class _Exam220HomePageState extends State<Exam222HomePage> {
                             return Example309();
                           }));
                         },
-                        child: Text("开源中图底部菜单"))
+                        child: Text("开源中图底部菜单")),
+
+          ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return Exam223HomePage();
+                    }));
+              },
+              child: Text("可托动的悬浮按钮")),
+
+
                   ],
                 ),
                 //向上弹出的按钮组件
@@ -237,6 +248,55 @@ class _ExampleState extends State<Example309> {
           clickCallBack: (int index) {
             print("点击了 $index");
           },
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+class Exam223HomePage extends StatefulWidget {
+  const Exam223HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<Exam223HomePage> createState() => _Exam223HomePageState();
+}
+
+///代码清单2-27 可托动的悬浮按钮
+
+class _Exam223HomePageState extends State<Exam223HomePage> {
+  //Stack使用的Key
+  final GlobalKey _parentKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          key: _parentKey,
+          children: [
+            Container(color: Colors.blueGrey),
+
+            DraggableFloatingActionButton(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const ShapeDecoration(
+                  shape: CircleBorder(),
+                  color: Colors.white,
+                ),
+                child: const Icon(Icons.add),
+              ),
+              initialOffset: const Offset(120, 70),
+              parentKey: _parentKey,
+              onPressed: () {},
+            ),
+          ],
         ),
       ),
     );

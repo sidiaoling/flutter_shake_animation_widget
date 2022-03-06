@@ -144,3 +144,45 @@ Flutter抖动动画组件，FLutter颤动动画
           },
         )
 ```
+
+#### 6 页面悬浮可托动按钮
+
+![](images/float_fab_button.gif)
+```
+
+class _Exam223HomePageState extends State<Exam223HomePage> {
+  //Stack使用的Key
+  final GlobalKey _parentKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          key: _parentKey,
+          children: [
+            Container(color: Colors.blueGrey),
+
+            DraggableFloatingActionButton(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const ShapeDecoration(
+                  shape: CircleBorder(),
+                  color: Colors.white,
+                ),
+                child: const Icon(Icons.add),
+              ),
+              initialOffset: const Offset(120, 70),
+              parentKey: _parentKey,
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
